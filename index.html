@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sussy Game Engine</title>
+
+    <link rel="icon" type="image/png" sizes="64x64" href="icon_small.png">
+    <style>
+        body {
+          margin: 0 auto;
+          max-width: 900;
+          padding: 0px;
+          font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.5;
+        }
+      
+        @media (max-width: 900) {
+          body {
+            max-width: 100%;
+            padding: 10px;
+          }
+        }
+
+        .center {
+          width: 80%;
+          height: auto;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        img {
+          padding: 20px;
+        }
+
+        h2 {
+          padding-top: 30px;
+          padding-bottom: 0px;
+          margin-bottom: 5px;
+        }
+
+        #icon {
+          width: 64px;
+          height: 64px;
+          vertical-align: middle;
+        }
+      </style>
+</head>
+
+<body>
+    <h1><img src="icon.png" id="icon"/>Sussy Game Engine</h1>
+    <p>Created by Andrew Tran and Fiza Shakeel as a general-purpose game engine. Used in an example game, an Among Us-like game, to demonstrate flexbility of the engine with the game implemented almost solely via Python scripts and descriptions of map and sprites. </p>
+
+    <h2>Quick Links</h2>
+    <ul>
+        <li><a href="https://github.com/Fall24BuildingGameEngines/finalproject-pika-pika/raw/refs/heads/main/Engine/EngineBuild/build.zip">arm64 macOS Build</a></li>
+        <li><a href="docs/annotated.html">API Documentation</a></li>
+    </ul>
+    
+    <h2>Engine Architecture</h2>
+    <img src="Game%20Engine%20Diagram.svg" id="diagram" class="center"/>
+
+    <h2>Video Trailer</h2>
+    <div style="text-align: center;">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/0gB-tMblqio?si=psnzpNPjRrT9sIo7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <h2>Postmortem</h2>
+    <p>It was interesting to write the WebSockets networking for synchronizing the game state between players. A major disadvantage of our set up is that every state change, including player movement, is handled solely on the host player's machine. It takes an entire network roundtrip to be able to move your own character if you are not the host. With more time, it would be interesting to implement networking where the local game state can desynchronize from the remote's. Additionally, it would be interesting to explore more clever ways of transmitting data from only transmitting changes to more efficient binary protocols like protobuf.</p>
+    <p>Additionally, it was interesting to optimize pixel-level collision detection. We were able to achieve decent performance by packing alpha channel information tightly into memory for comparison. Due to more limited documentation, we did not explore ldc2's SIMD support with GCC-style AVX builtins. Lots of comparisons within collision detection can boil down to just ORing large numbers, so it would be interesting to see how much more optimized SIMD could make it. We are also not sure of how to exactly exploit the GPU for this to avoid copying textures into CPU memory.</p>
+    <p>Finally, in terms of tooling, it was great to have a visual editor to arrange sprites on our game's maps. With more time, it would be interesting to better integrate our Python scripting support into the editor. The Python scripts depend a lot on changing game state via a key/value store with little structure enforced. It would be interesting if the editor would allow defining properties with types for sprites with interactions to code. A pattern like inter-object communication with slots and signals within the Qt library would be great inspiration.</p>
+
+    <h2>Screenshots</h2>
+    <img src="screenshot1.png" class="center" />
+    <img src="screenshot2.png" class="center" />
+    <img src="screenshot3.png" class="center" />
+    <img src="screenshot4.png" class="center" />
+</body>
+</html>
